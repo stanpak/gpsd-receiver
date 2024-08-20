@@ -4,6 +4,6 @@ export const settings = {
         port: 2947,
     },
     cache:{
-        retentionMinutes: 10,
+        retentionMinutes: 1,
     }
 };
