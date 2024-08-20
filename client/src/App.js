@@ -15,48 +15,60 @@ function App() {
         <h2>GPS Data Visualizer (gpsd)</h2>
       </div>
 
+      <div style={{ padding: 10 }}>
+        <Tabs id="TabsExample">
 
-      <Tabs id="TabsExample">
-        <Tab id="ng" title="Satellites" panel={
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            <div style={{ display: "flex", flexDirection: "column", flex: 1, }}>
-              <Satellites />
+          <Tab id="satellites" title="Satellites" panel={
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <div style={{ display: "flex", flexDirection: "column", flex: 1, }}>
+                <Satellites />
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+                <SatellitesPosition />
+              </div>
             </div>
-            <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
-              <SatellitesPosition />
+          } />
+          
+          <Tab id="position" title="Position" panel={
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <div style={{ display: "flex", flexDirection: "column", flex: 1, }}>
+                <Points />
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", flex: 1, }}>
+                <Point />
+              </div>
             </div>
-          </div>
-        } />
-        <Tab id="mb" title="Position" panel={
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            <div style={{ display: "flex", flexDirection: "column", flex: 1, }}>
-              <Points />
+          } panelClassName="ember-panel" />
+          
+          <Tab id="poi" title="POIs" panel={
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <div style={{ display: "flex", flexDirection: "column", flex: 1, }}>
+                <Shape />
+              </div>
             </div>
-            <div style={{ display: "flex", flexDirection: "column", flex: 1, }}>
-              <Point />
+          } />
+          
+          <Tab id="settings" title="Settings" panel={
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <div style={{ display: "flex", flexDirection: "column", flex: 1, }}>
+                <div style={{ display: "flex", flexDirection: "row" }}>
+                  <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+                    <Settings />
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+                    <Version />
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        } panelClassName="ember-panel" />
-        <Tab id="rx" title="Shapes" panel={
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            <div style={{ display: "flex", flexDirection: "column", flex: 1, }}>
-              <Shape />
-            </div>
-          </div>
-        } />
-        {/* <TabsExpander />
+          } />
+          
+          {/* <TabsExpander />
         <input className="bp5-input" type="text" placeholder="Search..." /> */}
-      </Tabs>
-
-
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
-          <Settings />
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
-          <Version />
-        </div>
+        </Tabs>
       </div>
+
+
     </div>
   );
 }
