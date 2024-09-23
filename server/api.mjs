@@ -136,7 +136,7 @@ export function registerApi(app) {
     });
 
     app.get('/version', (req, res) => {
-        res.json(version);
+        res.json(version );
     });
 
     app.get('/point/clearCache', (req, res) => {
