@@ -4,6 +4,7 @@
     "express": "^4.19.2",
     "nocache": "^4.0.0",
     "node-gpsd": "^0.3.4",
-    "simple-statistics": "^7.8.3"
+    "simple-statistics": "^7.8.3",
+    "uuid": "^10.0.0"
   }
 }

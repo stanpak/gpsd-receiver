@@ -1,6 +1,7 @@
 import gpsd from "node-gpsd";
 import { settings } from "./settings.mjs";
 import { mean, standardDeviation } from "simple-statistics";
+import { v4 as uuidv4 } from 'uuid';
 
 // https://gpsd.gitlab.io/gpsd/gpsd_json.html
 
@@ -10,75 +11,8 @@ import { mean, standardDeviation } from "simple-statistics";
 // This is the collection of the readings from the gpsd of the points "TPV".
 const pointReadings = [];
 
-setInterval(() => {
-    addNewItemToCache(pointReadings, {
-        class: 'TPV',
-        device: '/dev/ttyACM0',
-        mode: 3,
-        time: '2024-08-16T18:10:53.000Z',
-        leapseconds: 18,
-        ept: 0.005,
-        lat: 32.161865687 + Math.random() * 0.001865687,
-        lon: -109.541588222 + Math.random() * 0.001865687,
-        altHAE: 1573.535,
-        altMSL: 1600.759,
-        alt: 1600.759 + Math.random() * 10,
-        epx: 3.003 + Math.random() * 10,
-        epy: 6.508 + Math.random() * 10,
-        epv: 27.37,
-        magvar: 9.1,
-        speed: 0.004,
-        climb: 0.009,
-        eps: 13.02,
-        epc: 54.74,
-        geoidSep: -27.224,
-        eph: 12.73,
-        sep: 26.03
-    }
-    );
-}, 1000);
-
-
-
 // This is the collection of the readings from the gpsd of the sattelites "SKY".
-const satteliteReadings = [];
-
-setInterval(() => {
-    let count = Math.ceil(3 + Math.random() * 10);
-    let sats = {
-        class: 'SKY',
-        device: '/dev/ttyACM0',
-        xdop: 0.4 + Math.random() * 2 - 1,
-        ydop: 0.43 + Math.random() * 2 - 1,
-        vdop: 1.19,
-        tdop: 0.68,
-        hdop: 0.67,
-        gdop: 1.35,
-        pdop: 1.37,
-        nSat: count,
-        uSat: 25,
-        satellites: []
-    };
-
-    for (let i = 0; i < count; i++) {
-        sats.satellites.push({
-            PRN: "S" + Math.ceil(Math.random() * 10000),
-            az: Math.random() * 100 - 50,
-            el: Math.random() * 100 - 50,
-            freqid: 234,
-            gnssid: 123,
-            health: 1,
-            ss: 0,
-            sigid: 123,
-            svid: 234,
-            used: 3,
-        });
-    }
-
-    addNewItemToCache(satteliteReadings, sats);
-
-}, 1000);
-
+let satteliteReading;
 
 let listener = new gpsd.Listener({
     port: 2947,
@@ -105,13 +39,59 @@ listener = new gpsd.Listener({
 });
 
 listener.on('TPV', data => {
-    console.log({ data });
+    // console.log("TPV", new Date());
     addNewItemToCache(pointReadings, data);
 });
 
 listener.on('SKY', sky => {
-    console.log({ sky });
-    addNewItemToCache(satteliteReadings, sky);
+    // console.log({ sky });
+    if (sky.satellites)
+        for (let s of sky.satellites) {
+            s.id = uuidv4();
+
+            if (s.gnssid === 3) {
+                s.constellationName = "BeiDou";
+                s.constellationAbr = "BD";
+                s.svidRange = { min: 1, max: 37 };
+            } else
+                if (s.gnssid === 2) {
+                    s.constellationName = "Galileo";
+                    s.constellationAbr = "GA";
+                    s.svidRange = { min: 1, max: 36 };
+                } else
+                    if (s.gnssid === 6) {
+                        s.constellationName = "GLONASS";
+                        s.constellationAbr = "GL";
+                        s.svidRange = { min: 1, max: 35 };
+                    } else
+                        if (s.gnssid === 0) {
+                            s.constellationName = "GPS";
+                            s.constellationAbr = "GP";
+                            s.svidRange = { min: 1, max: 32 };
+                        } else
+                            if (s.gnssid === 4) {
+                                s.constellationName = "IMES";
+                                s.constellationAbr = "IM";
+                                s.svidRange = { min: 1, max: 10 };
+                            } else
+                                if (s.gnssid === 7) {
+                                    s.constellationName = "NavIC (IRNSS)";
+                                    s.constellationAbr = "IR";
+                                    s.svidRange = { min: 1, max: 11 };
+                                } else
+                                    if (s.gnssid === 5) {
+                                        s.constellationName = "QZSS";
+                                        s.constellationAbr = "QZ";
+                                        s.svidRange = { min: 1, max: 7 };
+                                    } else
+                                        if (s.gnssid === 1) {
+                                            s.constellationName = "SBAS";
+                                            s.constellationAbr = "SB";
+                                            s.svidRange = { min: 120, max: 158 };
+                                        }
+        }
+
+    satteliteReading = { time: new Date(), item: sky };
 });
 
 listener.on('INFO', info => {
@@ -161,18 +141,18 @@ export function registerApi(app) {
 
     app.get('/point/clearCache', (req, res) => {
         pointReadings.splice(0, pointReadings.length);
-        satteliteReadings.splice(0, satteliteReadings.length);
+        // satteliteReadings.splice(0, satteliteReadings.length);
 
         res.json({
             points: pointReadings.length,
-            satellites: satteliteReadings.length,
+            // satellites: satteliteReadings.length,
         });
     });
 
     app.get('/recent', (req, res) => {
         let readings = {
             point: pointReadings.length !== 0 ? pointReadings[pointReadings.length - 1] : undefined,
-            satellites: satteliteReadings.length !== 0 ? satteliteReadings[satteliteReadings.length - 1] : undefined,
+            // satellites: satteliteReadings.length !== 0 ? satteliteReadings[satteliteReadings.length - 1] : undefined,
         }
         res.json(readings);
     });
@@ -182,6 +162,7 @@ export function registerApi(app) {
     });
 
     app.get('/points', (req, res) => {
+        console.log(pointReadings.length);
 
         if (pointReadings.length !== 0) {
             let latArr = pointReadings.map(v => v.item.lat);
@@ -200,19 +181,29 @@ export function registerApi(app) {
     });
 
     app.get('/satellites', (req, res) => {
-        res.json(satteliteReadings.length !== 0 ? satteliteReadings[satteliteReadings.length - 1] : null);
+        res.json(satteliteReading);
     });
 
 
     app.get('/all', (req, res) => {
-        res.json({ points: pointReadings, satellites: satteliteReadings });
+        res.json({ points: pointReadings, satellites: satteliteReading });
     });
 }
 
 function addNewItemToCache(cache, item) {
+    // Find if it is duplicated...
+    let duplicateFound = cache.find(i => 
+        i.item.time === item.time && 
+        i.item.lat === item.lat && 
+        i.item.lon === item.lon);
+    // console.log({ item, duplicateFound });
+
+    if(duplicateFound)
+        return;
+
     let now = new Date();
     cache.push({ time: now, item: item });
-    let expiresOn = new Date(now - settings.cache.retentionMinutes * 1000 * 60);
+    let expiresOn = new Date(now - settings.cache.retentionSec * 1000);
     for (let p of cache) {
         if (p.time <= expiresOn)
             cache.shift();

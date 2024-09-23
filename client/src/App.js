@@ -23,9 +23,6 @@ function App() {
               <div style={{ display: "flex", flexDirection: "column", flex: 1, }}>
                 <Satellites />
               </div>
-              <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
-                <SatellitesPosition />
-              </div>
             </div>
           } />
           

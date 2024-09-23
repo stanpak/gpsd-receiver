@@ -1,16 +1,7 @@
 import { Button, Card, Elevation, Tooltip } from "@blueprintjs/core";
-import {XYPlot, XAxis, YAxis, MarkSeries, CircularGridLines} from "react-vis";
+import { XYPlot, XAxis, YAxis, MarkSeries, CircularGridLines, LabelSeries, MarkSeriesCanvas } from "react-vis";
 
 // https://uber.github.io/react-vis/documentation/welcome-to-react-vis
-
-const data = [
-  { r: 1, theta: Math.PI / 3, size: 30 },
-  { r: 1.7, theta: (2 * Math.PI) / 3, size: 10 },
-  { r: 2, theta: Math.PI, size: 1 },
-  { r: 3, theta: (3 * Math.PI) / 2, size: 12 },
-  { r: 2.5, theta: Math.PI / 4, size: 4 },
-  { r: 0, theta: Math.PI / 4, size: 1 }
-];
 
 const margin = {
   top: 10,
@@ -19,10 +10,38 @@ const margin = {
   right: 10
 };
 
-const WIDTH = 300;
-const HEIGHT = 300;
+const palette =[
+  "red","green", "blue","yellow", "brown","gray"
+];
 
-export default function SatellitesPosition() {
+const WIDTH = 600;
+const HEIGHT = 600;
+
+function deg2rad(x) {
+  return x * Math.PI / 180;
+}
+
+function satColor(gnssid) {
+  return gnssid;
+}
+
+export default function SatellitesPosition({ satellites }) {
+
+  // console.log({satellites});
+  const data = [];
+  for (let s of satellites) {
+    data.push({
+      r: 90 - s.el,
+      theta: deg2rad(90 - s.az),
+      size: 1 + s.ss ,
+      label: s.PRN,
+      color: satColor(s.gnssid),
+      // fill: "green",
+      // color: "blue",
+      // stroke: 7,
+
+    });
+  }
 
   return (
     <Card interactive={false} elevation={Elevation.TWO} style={{ margin: 5 }} compact={true}>
@@ -34,16 +53,27 @@ export default function SatellitesPosition() {
         <div style={{ display: "flex", flexDirection: "row", alignItems: "flex-start" }}>
           <XYPlot
             margin={margin}
-            xDomain={[-3, 3]}
-            yDomain={[-3, 3]}
+            xDomain={[-90, 90]}
+            yDomain={[-90, 90]}
             width={WIDTH}
             height={HEIGHT}
           >
             <XAxis top={(HEIGHT - margin.top) / 2} />
             <YAxis left={(WIDTH - margin.left - margin.right) / 2} />
             <MarkSeries
-              strokeWidth={2}
-              sizeRange={[5, 15]}
+              // strokeWidth={0}
+              // size={3}
+              sizeRange={[2, 20]}
+              // colorType="literal"
+              data={data.map(row => ({
+                ...row,
+                x: Math.cos(row.theta) * row.r,
+                y: Math.sin(row.theta) * row.r
+              }))}
+            />
+            <LabelSeries
+              animation
+              allowOffsetToBeReversed
               data={data.map(row => ({
                 ...row,
                 x: Math.cos(row.theta) * row.r,

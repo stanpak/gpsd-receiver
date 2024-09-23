@@ -17,21 +17,11 @@ export default function Point() {
     };
 
     fetchData();
+
+    const intervalId = setInterval(fetchData, 1000); // Refresh every 1 seconds
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);
-
-  const interval = setInterval(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:4000/point');
-        const result = await response.json();
-        setData(result);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, 1000);
 
   return (
     <Card interactive={false} elevation={Elevation.TWO} style={{ margin: 5 }} compact={true}>
