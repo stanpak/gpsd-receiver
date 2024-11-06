@@ -15,7 +15,7 @@ function measure(lat1, lon1, lat2, lon2) {  // generally used geo measurement fu
   return d * 1000; // meters
 }
 
-export default function Points() {
+export default function RecentPositions() {
 
   const [data, setData] = useState(null);
   const [points, setPoints] = useState(null);
@@ -23,7 +23,7 @@ export default function Points() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:4000/points');
+        const response = await fetch('http://localhost:4000/position/getAllRecent');
         const result = await response.json();
         setData(result);
 
@@ -64,9 +64,24 @@ export default function Points() {
 
   return (
     <Card interactive={false} elevation={Elevation.TWO} style={{ margin: 5 }} compact={true}>
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <div style={{ display: "flex", flexDirection: "row", flex: 1 }}>
-          <p className="CardTitle"><strong>Recent Points</strong></p>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "stretch", }}>
+
+        <div style={{ display: "flex", flexDirection: "row", alignItems: "baseline" }}>
+          <div className="CardTitle" style={{ flex: 1, }}><strong>Recent Positions</strong></div>
+
+          <Button text="Clear" style={{ marginBottom: 2, marginTop: 2 }}
+            onClick={async () => {
+              await fetch('http://localhost:4000/point/clearCache');
+            }} />
+
+          <Button text="Save as Point" style={{ marginBottom: 2, marginTop: 2 }}
+            onClick={async () => {
+              await fetch('http://localhost:4000/point/clearCache');
+            }} />
+
+          <Button text="Copy" style={{ marginBottom: 2, marginTop: 2 }}
+            onClick={() => { navigator.clipboard.writeText(data.latMean + "," + data.lonMean); }} />
+
         </div>
 
         {!data ?
@@ -181,19 +196,6 @@ export default function Points() {
                   <p className="ParamValue">{errorRadiusM ? errorRadiusM.toFixed(2) : ""} m</p>
                 </div>
               </div>
-
-              <Button text="Clear Sequence" style={{ marginBottom: 2, marginTop: 2 }}
-                onClick={async () => {
-                  await fetch('http://localhost:4000/point/clearCache');
-                }} />
-
-              <Button text="Save Point" style={{ marginBottom: 2, marginTop: 2 }}
-                onClick={async () => {
-                  await fetch('http://localhost:4000/point/clearCache');
-                }} />
-
-              <Button text="Copy Coordinates" style={{ marginBottom: 2, marginTop: 2 }}
-                onClick={() => { navigator.clipboard.writeText(data.latMean+ "," + data.lonMean); }} />
 
             </div>
           </div>

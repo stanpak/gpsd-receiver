@@ -21,8 +21,9 @@ export default function Settings() {
 
   return (
     <Card interactive={false} elevation={Elevation.TWO} style={{ margin: 5 }} compact={true}>
-      <div style={{ display: "flex", flexDirection: "row", alignItems:"baseline"}}>
-        <div style={{ display: "flex", flexDirection: "row", paddingRight:20,  }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "stretch", }}>
+
+        <div style={{ display: "flex", flexDirection: "row", alignItems: "baseline" }}>
           <div className="CardTitle"><strong>Settings</strong></div>
         </div>
 

@@ -55,8 +55,9 @@ export default function Satellites() {
 
   return (
     <Card interactive={false} elevation={Elevation.TWO} style={{ margin: 5 }} compact={true}>
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <div style={{ display: "flex", flexDirection: "row", flex: 1 }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "stretch", }}>
+
+        <div style={{ display: "flex", flexDirection: "row", alignItems: "baseline" }}>
           <div className="CardTitle"><strong>Satellites</strong></div>
         </div>
 
@@ -253,7 +254,10 @@ export default function Satellites() {
               }
             </div>
             <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
-              <SatellitesPosition satellites={data.item.satellites} />
+              {
+                data.item.satellites &&
+                <SatellitesPosition satellites={data.item.satellites} />
+              }
             </div>
           </div>
         }

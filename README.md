@@ -36,6 +36,7 @@ sudo cat /dev/ttyACM0
 ```
 
 ## GPSD installation
+It is assumed that the system where this application is deployed has installed `gpsd`.
 
 ```bash
 sudo apt update

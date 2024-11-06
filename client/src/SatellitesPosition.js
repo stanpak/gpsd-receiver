@@ -26,10 +26,9 @@ function satColor(gnssid) {
 }
 
 export default function SatellitesPosition({ satellites }) {
-
-  // console.log({satellites});
   const data = [];
   for (let s of satellites) {
+    if(s.az && s.el)
     data.push({
       r: 90 - s.el,
       theta: deg2rad(90 - s.az),
@@ -42,11 +41,13 @@ export default function SatellitesPosition({ satellites }) {
 
     });
   }
+  // console.log({satellites, data});
 
   return (
-    <Card interactive={false} elevation={Elevation.TWO} style={{ margin: 5 }} compact={true}>
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <div style={{ display: "flex", flexDirection: "row", flex: 1 }}>
+    <Card interactive={false} elevation={Elevation.ONE} style={{ margin: 5 }} compact={true}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "stretch", }}>
+
+        <div style={{ display: "flex", flexDirection: "row", alignItems: "baseline" }}>
           <p className="CardTitle"><strong>Satellites Position</strong></p>
         </div>
 

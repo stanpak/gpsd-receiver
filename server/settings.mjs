@@ -4,6 +4,9 @@ export const settings = {
         port: 2947,
     },
     cache:{
-        retentionSec: 10,
+        retentionSec: 60,
+    },
+    googleMaps:{
+        apiKey: ""
     }
 };

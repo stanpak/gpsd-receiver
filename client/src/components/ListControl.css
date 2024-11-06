@@ -1,0 +1,55 @@
+.ListControl
+{
+}
+
+.ListControl :hover
+{
+  background-color: bisque;
+}
+
+.ListItem
+{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-top: 2px;
+  padding-bottom: 2px;
+
+  border-top-color:gainsboro;
+  border-top-width: 0.5px;
+  border-top-style: solid;
+}
+
+.ListItemSelected
+{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-top: 2px;
+  padding-bottom: 2px;
+
+  /* color: beige; */
+  background-color: #eeeeee;
+
+  border-top-color:gainsboro;
+  border-top-width: 0.5px;
+  border-top-style: solid;
+}
+
+.ListItemIcon
+{
+  padding: 10px;
+  color:darkblue;
+}
+
+.ListItemLink
+{
+  color:royalblue;
+}
+
+.ListItemLink :hover
+{
+  color:black;
+  cursor: pointer;
+  text-decoration: underline;
+}
