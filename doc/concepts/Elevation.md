@@ -1,0 +1,3 @@
+Satellite elevation in a geopositioning system, such as GPS, refers to the angle between the line of sight to a satellite and the horizontal plane at the observer's location on the Earth's surface. It is typically measured in degrees, with 0 degrees being directly on the horizon and 90 degrees being directly overhead (zenith). 
+
+Higher satellite elevation angles generally result in better signal quality and accuracy because the signals have a shorter path through the atmosphere and less chance of interference from obstacles like buildings or terrain. For optimal positioning, GPS receivers usually prefer satellites that are at higher elevation angles.

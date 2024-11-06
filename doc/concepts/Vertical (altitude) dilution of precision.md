@@ -1,0 +1,5 @@
+Vertical Dilution of Precision (VDOP) is a measure used in Global Navigation Satellite Systems (GNSS) to describe the quality of the vertical position (altitude) estimation based on the geometry of the satellites in view. 
+
+In essence, VDOP indicates how the relative positions of satellites affect the accuracy of the vertical component of a position fix. A lower VDOP value suggests that the satellites are positioned in a way that provides better vertical accuracy, while a higher VDOP indicates poorer vertical accuracy due to the arrangement of the satellites. 
+
+VDOP is part of the overall Dilution of Precision (DOP), which includes other components such as Horizontal DOP (HDOP) for horizontal accuracy and Position DOP (PDOP) for overall position accuracy. Good satellite geometry, where satellites are widely spaced and not clustered together, typically results in lower DOP values and thus higher positional accuracy.

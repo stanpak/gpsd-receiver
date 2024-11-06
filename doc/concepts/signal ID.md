@@ -1,0 +1,5 @@
+In the context of satellite-based positioning systems, such as the Global Positioning System (GPS), a Satellite Signal ID refers to a unique identifier for a specific satellite's signal. Each satellite transmits a signal that includes information like its position, time, and other data necessary for the receiver to calculate its location.
+
+The Signal ID helps differentiate between signals from various satellites, especially when multiple satellites are in view. This allows GPS receivers to accurately track and utilize signals from different satellites to determine the user's position, velocity, and time. 
+
+In GPS, the Signal ID is often associated with specific codes used for navigation messages, such as the Coarse/Acquisition (C/A) code and the Precise (P) code, which help in distinguishing the signals from different satellites and their respective data.
